@@ -1,2 +1,6 @@
 node_modules/
 .DS_Store
+# Chinese-named original images (renamed copies exist)
+*.jpeg
+# Temp files
+*.md
