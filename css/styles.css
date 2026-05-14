@@ -420,19 +420,20 @@ nav {
   grid-column: 1 / -1;
   grid-template-columns: minmax(0, 1fr) minmax(340px, 0.78fr);
   grid-template-rows: none;
-  min-height: 440px;
+  min-height: 0;
 }
 
 .card-cover {
   width: 100%;
-  height: 255px;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: linear-gradient(135deg, var(--accent-soft), var(--surface-strong));
 }
 
 .featured .card-cover {
-  height: 100%;
-  min-height: 440px;
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 16 / 10;
 }
 
 .card-cover img {
@@ -440,10 +441,10 @@ nav {
   height: 100%;
   display: block;
   object-fit: cover;
-  transition: transform 700ms ease;
+  transition: transform 500ms ease;
 }
 
-.article-card:hover .card-cover img { transform: scale(1.035); }
+.article-card:hover .card-cover img { transform: scale(1.025); }
 
 .card-body {
   display: flex;
@@ -469,6 +470,7 @@ nav {
   font-weight: 800;
   line-height: 1.22;
   margin-bottom: 12px;
+  overflow-wrap: anywhere;
 }
 
 .featured .card-title {
@@ -554,17 +556,22 @@ nav {
 #article-detail { padding-bottom: 80px; }
 
 .article-cover {
-  margin: 0 0 34px;
-  border-radius: 30px;
+  max-width: 860px;
+  max-height: 420px;
+  margin: 0 auto 34px;
+  border-radius: 28px;
   overflow: hidden;
   box-shadow: var(--shadow);
+  background: var(--surface-strong);
+  aspect-ratio: 16 / 9;
 }
 
 .article-cover img {
   width: 100%;
-  max-height: 640px;
+  height: 100%;
   display: block;
   object-fit: cover;
+  cursor: zoom-in;
 }
 
 .article-header { padding: 4px 0 34px; }
@@ -591,6 +598,7 @@ nav {
   font-size: clamp(2.25rem, 7vw, 4.7rem);
   font-weight: 850;
   line-height: 1.05;
+  overflow-wrap: anywhere;
 }
 
 .article-tags {
@@ -665,12 +673,16 @@ nav {
 .article-body pre code { background: none; padding: 0; color: inherit; }
 
 .article-body img {
-  width: 100%;
-  max-width: 100%;
-  border-radius: 24px;
+  width: auto;
+  max-width: min(100%, 680px);
+  max-height: 460px;
+  height: auto;
+  border-radius: 20px;
   display: block;
-  margin: 2em auto 0;
-  box-shadow: var(--shadow);
+  margin: 2.2em auto 0;
+  background: var(--surface-strong);
+  box-shadow: 0 14px 46px rgba(0, 0, 0, 0.1);
+  cursor: zoom-in;
 }
 
 .article-body hr {
@@ -691,15 +703,19 @@ nav {
 .image-gallery {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin: 2em 0 0;
+  gap: 12px;
+  max-width: 720px;
+  margin: 2.1em auto 0;
 }
 
 .image-gallery img {
-  height: 360px;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  max-height: 300px;
   object-fit: cover;
   margin: 0;
-  border-radius: 22px;
+  border-radius: 18px;
   background: var(--surface-strong);
 }
 
@@ -717,12 +733,17 @@ nav {
 
 .lightbox.active { display: flex; }
 
+.lightbox-open {
+  overflow: hidden;
+}
+
 .lightbox img {
   max-width: 94vw;
   max-height: 92vh;
   border-radius: 18px;
   box-shadow: 0 20px 80px rgba(0,0,0,0.55);
   cursor: default;
+  object-fit: contain;
 }
 
 .lightbox-close {
@@ -733,6 +754,9 @@ nav {
   font-size: 2rem;
   cursor: pointer;
   opacity: 0.75;
+  border: 0;
+  background: transparent;
+  line-height: 1;
 }
 
 .lightbox-close:hover { opacity: 1; }
@@ -861,7 +885,8 @@ nav {
   }
 
   .featured .card-cover {
-    min-height: 360px;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
   }
 
   .about-content {
@@ -938,8 +963,9 @@ nav {
 
   .card-cover,
   .featured .card-cover {
-    height: 255px;
-    min-height: 255px;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
   }
 
   .card-body,
@@ -952,7 +978,8 @@ nav {
   }
 
   .article-title {
-    font-size: 2.35rem;
+    font-size: 2.1rem;
+    line-height: 1.12;
   }
 
   .article-body {
@@ -975,13 +1002,25 @@ nav {
     border-radius: 18px;
   }
 
+  .article-cover {
+    margin-bottom: 24px;
+    max-height: 280px;
+  }
+
+  .article-body img {
+    max-width: 100%;
+    max-height: 360px;
+    margin-top: 1.8em;
+  }
+
   .image-gallery {
     grid-template-columns: 1fr;
+    max-width: 100%;
   }
 
   .image-gallery img {
-    height: auto;
-    max-height: none;
+    aspect-ratio: 16 / 10;
+    max-height: 280px;
   }
 
   .about-content {

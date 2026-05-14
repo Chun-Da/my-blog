@@ -191,14 +191,14 @@ function showArticle(id) {
 
   setTimeout(function () {
     var coverHtml = article.cover
-      ? '<div class="article-cover"><img src="' + article.cover + '" alt="' + article.title + '" loading="lazy"></div>'
+      ? '<div class="article-cover"><img src="' + article.cover + '" alt="' + article.title + '" loading="lazy" decoding="async"></div>'
       : "";
     var tagsHtml = article.tags
       ? '<div class="article-tags">' + article.tags.map(function (t) { return '<span class="article-tag">' + t + '</span>'; }).join("") + '</div>'
       : "";
 
     // Inject lazy loading into content images
-    var content = article.content.replace(/<img /g, '<img loading="lazy" ');
+    var content = article.content.replace(/<img /g, '<img loading="lazy" decoding="async" ');
 
     articleDetail.innerHTML =
       coverHtml +
@@ -218,17 +218,27 @@ function initLightbox() {
   var lb = document.createElement("div");
   lb.id = "lightbox";
   lb.className = "lightbox";
-  lb.innerHTML = '<span class="lightbox-close">&times;</span><img src="" alt="">';
+  lb.innerHTML = '<button class="lightbox-close" type="button" aria-label="关闭图片预览">&times;</button><img src="" alt="">';
   document.body.appendChild(lb);
-  lb.addEventListener("click", function () { lb.classList.remove("active"); });
+  function closeLightbox() {
+    lb.classList.remove("active");
+    document.body.classList.remove("lightbox-open");
+  }
+  lb.addEventListener("click", closeLightbox);
+  lb.querySelector(".lightbox-close").addEventListener("click", closeLightbox);
   lb.querySelector("img").addEventListener("click", function (e) { e.stopPropagation(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeLightbox();
+  });
 
   articleDetail.addEventListener("click", function (e) {
     var img = e.target.closest("img");
     if (!img) return;
     if (!img.closest(".article-body") && !img.closest(".article-cover")) return;
     lb.querySelector("img").src = img.src;
+    lb.querySelector("img").alt = img.alt || "";
     lb.classList.add("active");
+    document.body.classList.add("lightbox-open");
   });
 
   articleDetail.addEventListener("error", function (e) {
