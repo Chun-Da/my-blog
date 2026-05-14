@@ -45,6 +45,7 @@ function showView(name) {
   var views = document.querySelectorAll(".view");
   for (var i = 0; i < views.length; i++) { views[i].classList.remove("active"); }
   document.getElementById("view-" + name).classList.add("active");
+  window.scrollTo(0, 0);
 
   for (var j = 0; j < navLinks.length; j++) {
     navLinks[j].classList.remove("active");
