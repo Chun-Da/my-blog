@@ -1,0 +1,11 @@
+.git
+.git/**
+node_modules
+node_modules/**
+.DS_Store
+DEBUG.md
+DEPLOY.md
+TECH.md
+package.json
+package-lock.json
+wrangler.jsonc

@@ -1,0 +1,12 @@
+{
+  "name": "my-blog",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler pages deploy . --project-name my-blog",
+    "deploy:worker-assets": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.90.1"
+  }
+}
