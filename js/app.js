@@ -6,6 +6,7 @@ var navLinks = document.querySelectorAll(".nav-link");
 var progressBar = document.getElementById("progress-bar");
 var themeToggle = document.getElementById("theme-toggle");
 var tagFilter = document.getElementById("tag-filter");
+var articleCount = document.getElementById("article-count");
 
 // ===== Theme =====
 function initTheme() {
@@ -27,6 +28,16 @@ function getTextLength(html) {
 function readingTime(html) {
   var chars = getTextLength(html);
   return Math.max(1, Math.ceil(chars / 400));
+}
+
+function fallbackCover(index) {
+  var covers = [
+    "img/gongga-golden.jpg",
+    "img/tortie-cat.jpg",
+    "img/qingyin-stream.jpg",
+    "img/west-mountains.jpg"
+  ];
+  return covers[index % covers.length];
 }
 
 // ===== View transition =====
@@ -100,18 +111,27 @@ function renderTagFilter() {
 
 function filterCards() {
   var cards = articleList.querySelectorAll(".article-card");
+  var visible = 0;
   for (var i = 0; i < cards.length; i++) {
     var card = cards[i];
-    if (!activeTag) { card.style.display = "flex"; continue; }
+    if (!activeTag) {
+      card.style.display = "";
+      visible++;
+      continue;
+    }
     var cardTags = JSON.parse(card.dataset.tags || "[]");
-    card.style.display = cardTags.indexOf(activeTag) >= 0 ? "flex" : "none";
+    var shouldShow = cardTags.indexOf(activeTag) >= 0;
+    card.style.display = shouldShow ? "" : "none";
+    if (shouldShow) visible++;
   }
+  if (articleCount) articleCount.textContent = visible + " 篇";
 }
 
 // ===== Article list =====
 function renderArticleList() {
   if (ARTICLES.length === 0) {
     articleList.innerHTML = '<div class="empty-hint">还没有文章。</div>';
+    if (articleCount) articleCount.textContent = "0 篇";
     return;
   }
 
@@ -123,9 +143,8 @@ function renderArticleList() {
   var html = "";
   for (var i = 0; i < sorted.length; i++) {
     var a = sorted[i];
-    var coverHtml = a.cover
-      ? '<div class="card-cover"><img src="' + a.cover + '" alt="" loading="lazy"></div>'
-      : '<div class="card-cover"></div>';
+    var cover = a.cover || fallbackCover(i);
+    var coverHtml = '<div class="card-cover"><img src="' + cover + '" alt="" loading="lazy"></div>';
     var tagsHtml = a.tags
       ? '<div class="card-tags">' + a.tags.map(function (t) { return '<span class="card-tag">' + t + '</span>'; }).join("") + '</div>'
       : "";
@@ -133,7 +152,7 @@ function renderArticleList() {
     var tagsData = a.tags ? JSON.stringify(a.tags) : "[]";
 
     html +=
-      '<div class="article-card" data-id="' + a.id + '" data-tags=\'' + tagsData + '\' style="--card-index:' + i + '">' +
+      '<div class="article-card' + (i === 0 ? ' featured' : '') + '" data-id="' + a.id + '" data-tags=\'' + tagsData + '\' style="--card-index:' + i + '">' +
         coverHtml +
         '<div class="card-body">' +
           '<div class="card-date">' + a.date + ' · ' + time + ' min read</div>' +
@@ -144,6 +163,7 @@ function renderArticleList() {
       '</div>';
   }
   articleList.innerHTML = html;
+  if (articleCount) articleCount.textContent = sorted.length + " 篇";
 
   var cards = articleList.querySelectorAll(".article-card");
   for (var j = 0; j < cards.length; j++) {

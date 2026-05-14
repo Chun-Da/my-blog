@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Blog</title>
+  <title>Tangyu Journal</title>
   <script>
     (function(){var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.dataset.theme=t;})()
   </script>
@@ -14,11 +14,11 @@
 
   <header class="site-header">
     <div class="container">
-      <h1 class="site-title"><a href="#">My Blog</a></h1>
+      <h1 class="site-title"><a href="#">Tangyu Journal</a></h1>
       <nav>
         <a href="#" class="nav-link active" data-view="home">文章</a>
         <a href="#" class="nav-link" data-view="about">关于</a>
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">&sung;</button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="切换深浅色">◐</button>
       </nav>
     </div>
   </header>
@@ -27,9 +27,25 @@
     <!-- 首页 -->
     <section id="view-home" class="view active">
       <div class="hero">
-        <h2>My Blog</h2>
-        <p>记录想法、学习和生活。</p>
-        <div class="hero-separator"></div>
+        <div class="hero-copy">
+          <p class="hero-kicker">Personal Field Notes</p>
+          <h2>把路上的光、生活里的疑问和认真想过的事写下来。</h2>
+          <p>一间安静的中文博客，收集旅行、技术、AI 与日常观察。</p>
+        </div>
+        <div class="hero-panel" aria-hidden="true">
+          <img src="img/golden-sunrise.jpg" alt="">
+          <div class="hero-panel-card">
+            <span>Latest Journey</span>
+            <strong>峨眉山夜爬</strong>
+          </div>
+        </div>
+      </div>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Stories</p>
+          <h2>最新文章</h2>
+        </div>
+        <span id="article-count"></span>
       </div>
       <div class="tag-filter" id="tag-filter"></div>
       <div class="article-list" id="article-list"></div>
@@ -44,17 +60,23 @@
     <!-- 关于 -->
     <section id="view-about" class="view">
       <div class="about-content">
-        <div class="about-avatar">T</div>
-        <h2>关于我</h2>
-        <p>一个普通人，在互联网的角落里搭了个小地方写点东西。</p>
-        <p>没什么宏大的目标。只是觉得人活一辈子，总该留下点什么——哪怕只是一篇游记、几句碎碎念、几张路上拍的照片。这个世界很大，我来过，我想留下一点足迹。</p>
+        <div class="about-visual">
+          <img src="img/gongga-golden.jpg" alt="日照金山贡嘎山">
+        </div>
+        <div class="about-copy">
+          <div class="about-avatar">T</div>
+          <p class="eyebrow">About</p>
+          <h2>关于我</h2>
+          <p>一个普通人，在互联网的角落里搭了个小地方写点东西。</p>
+          <p>没什么宏大的目标。只是觉得人活一辈子，总该留下点什么，哪怕只是一篇游记、几句碎碎念、几张路上拍的照片。这个世界很大，我来过，我想留下一点足迹。</p>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>&copy; 2026 My Blog</p>
+      <p>&copy; 2026 Tangyu Journal</p>
       <div class="weather-widget" id="weather-widget"></div>
     </div>
   </footer>
