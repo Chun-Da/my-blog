@@ -39,16 +39,37 @@
     widget.innerHTML = icon + " " + location + " — " + temp + ", " + desc + windStr;
   }
 
+  var WMO_DESC = {
+    0: "天晴",
+    1: "大致天晴",
+    2: "间多云",
+    3: "天阴",
+    45: "有雾",
+    48: "有冻雾",
+    51: "间中有毛毛雨",
+    53: "有毛毛雨",
+    55: "持续有毛毛雨",
+    61: "间中有雨",
+    63: "有雨",
+    65: "局部地区有大雨",
+    66: "有冻雨",
+    67: "局部地区有大冻雨",
+    71: "间中有雪",
+    73: "有雪",
+    75: "大雪",
+    77: "有雪粒",
+    80: "间中有阵雨",
+    81: "有阵雨",
+    82: "局部地区有狂风大雨",
+    85: "间中有阵雪",
+    86: "有大阵雪",
+    95: "局部地区有雷暴",
+    96: "局部地区有雷暴及冰雹",
+    99: "局部地区有强烈雷暴及大冰雹"
+  };
+
   function getWeatherDesc(code) {
-    if (code === 0) return "Clear";
-    if (code <= 3) return "Partly cloudy";
-    if (code <= 48) return "Fog";
-    if (code <= 55) return "Drizzle";
-    if (code <= 65) return "Rain";
-    if (code <= 77) return "Snow";
-    if (code <= 82) return "Rain showers";
-    if (code <= 86) return "Snow showers";
-    return "Thunderstorm";
+    return WMO_DESC[code] || "天色不明";
   }
 
   function fetchWeather(geo) {
