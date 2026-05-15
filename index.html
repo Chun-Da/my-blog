@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>山野札记</title>
+  <title>行间</title>
+  <meta name="description" content="把路上的光、生活里的疑问和认真想过的事写下来。一间安静的中文博客，收集旅行、技术、AI 与日常观察。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="行间">
+  <meta property="og:description" content="把路上的光、生活里的疑问和认真想过的事写下来。一间安静的中文博客，收集旅行、技术、AI 与日常观察。">
+  <meta property="og:image" content="img/golden-sunrise.jpg">
   <script>
     (function(){var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.dataset.theme=t;})()
   </script>
@@ -14,7 +19,7 @@
 
   <header class="site-header">
     <div class="container">
-      <h1 class="site-title"><a href="#">山野札记</a></h1>
+      <h1 class="site-title"><a href="#">行间</a></h1>
       <nav>
         <a href="#" class="nav-link active" data-view="home">文章</a>
         <a href="#" class="nav-link" data-view="about">关于</a>
@@ -36,7 +41,7 @@
           <img src="img/golden-sunrise.jpg" alt="">
           <div class="hero-panel-card">
             <span>Latest Journey</span>
-            <strong>峨眉山夜爬</strong>
+            <strong id="hero-latest-title"></strong>
           </div>
         </div>
       </div>
@@ -76,7 +81,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>&copy; 2026 山野札记</p>
+      <p>&copy; 2026 行间</p>
       <div class="weather-widget" id="weather-widget"></div>
     </div>
   </footer>

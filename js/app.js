@@ -166,6 +166,9 @@ function renderArticleList() {
   articleList.innerHTML = html;
   if (articleCount) articleCount.textContent = sorted.length + " 篇";
 
+  var heroTitle = document.getElementById("hero-latest-title");
+  if (heroTitle && sorted.length > 0) heroTitle.textContent = sorted[0].title;
+
   var cards = articleList.querySelectorAll(".article-card");
   for (var j = 0; j < cards.length; j++) {
     cards[j].addEventListener("click", function () {
