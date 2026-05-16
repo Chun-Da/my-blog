@@ -367,7 +367,12 @@ function submitComment(articleId, form) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ article_id: articleId, author: author, content: content }),
   })
-    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+    .then(function (r) {
+      return r.text().then(function (text) {
+        try { return { ok: r.ok, status: r.status, data: JSON.parse(text) }; }
+        catch (e) { throw new Error('HTTP ' + r.status); }
+      });
+    })
     .then(function (res) {
       if (!res.ok) {
         if (errorEl) errorEl.textContent = res.data.error || '提交失败，请重试';
@@ -381,8 +386,8 @@ function submitComment(articleId, form) {
       submitBtn.textContent = '发布';
       loadComments(articleId);
     })
-    .catch(function () {
-      if (errorEl) errorEl.textContent = '网络错误，请重试';
+    .catch(function (err) {
+      if (errorEl) errorEl.textContent = '提交失败：' + (err.message || '网络错误');
       submitBtn.disabled = false;
       submitBtn.textContent = '发布';
     });
