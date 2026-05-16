@@ -1,10 +1,4 @@
-const INIT_SQL = `CREATE TABLE IF NOT EXISTS comments (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  article_id TEXT NOT NULL,
-  author     TEXT NOT NULL,
-  content    TEXT NOT NULL,
-  created_at TEXT NOT NULL
-)`;
+const INIT_SQL = 'CREATE TABLE IF NOT EXISTS comments (id INTEGER PRIMARY KEY AUTOINCREMENT, article_id TEXT NOT NULL, author TEXT NOT NULL, content TEXT NOT NULL, created_at TEXT NOT NULL)';
 
 function escapeHtml(str) {
   return str
@@ -23,7 +17,7 @@ function json(data, status = 200) {
 }
 
 async function handleGet(request, env) {
-  await env.DB.exec(INIT_SQL);
+  await env.DB.prepare(INIT_SQL).run();
   const articleId = new URL(request.url).searchParams.get('article');
   if (!articleId) return json({ error: 'Missing article' }, 400);
 
@@ -35,7 +29,7 @@ async function handleGet(request, env) {
 }
 
 async function handlePost(request, env) {
-  await env.DB.exec(INIT_SQL);
+  await env.DB.prepare(INIT_SQL).run();
 
   let body;
   try { body = await request.json(); }
