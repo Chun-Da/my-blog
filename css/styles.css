@@ -1103,6 +1103,11 @@ nav {
   color: var(--text);
 }
 
+.comment-location {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
 .comment-date {
   font-size: var(--text-xs);
   color: var(--text-muted);

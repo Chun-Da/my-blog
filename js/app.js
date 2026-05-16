@@ -323,11 +323,13 @@ function renderCommentList(comments) {
     var c = comments[i];
     var initial = c.author.charAt(0).toUpperCase();
     var display = c.content.replace(/\n/g, '<br>');
+    var locationHtml = c.location ? '<span class="comment-location">来自 ' + c.location + '</span>' : '';
     html += '<div class="comment-item">' +
       '<div class="comment-avatar">' + initial + '</div>' +
       '<div class="comment-right">' +
         '<div class="comment-meta">' +
           '<span class="comment-author">' + c.author + '</span>' +
+          locationHtml +
           '<span class="comment-date">' + formatCommentDate(c.created_at) + '</span>' +
         '</div>' +
         '<div class="comment-content">' + display + '</div>' +
