@@ -210,7 +210,26 @@ function showArticle(id) {
         '<h1 class="article-title">' + article.title + '</h1>' +
         tagsHtml +
       '</div>' +
-      '<div class="article-body">' + content + '</div>';
+      '<div class="article-body">' + content + '</div>' +
+      '<div id="comment-section" class="comment-section">' +
+        '<h3 class="comment-heading">评论</h3>' +
+        '<div class="comment-list" id="comment-list"><span class="comment-loading">加载中…</span></div>' +
+        '<form class="comment-form" id="comment-form">' +
+          '<input type="text" class="comment-name-input" placeholder="昵称（必填）" maxlength="50" autocomplete="nickname">' +
+          '<textarea class="comment-textarea" placeholder="写下你的想法…" maxlength="1000" rows="4"></textarea>' +
+          '<div class="comment-form-footer">' +
+            '<span class="comment-error" id="comment-error"></span>' +
+            '<button type="submit" class="comment-submit">发布</button>' +
+          '</div>' +
+        '</form>' +
+      '</div>';
+
+    loadComments(id);
+
+    document.getElementById('comment-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      submitComment(id, this);
+    });
   }, 50);
 }
 
@@ -284,6 +303,90 @@ function handleRoute() {
 }
 
 window.addEventListener("hashchange", handleRoute);
+
+// ===== Comments =====
+function formatCommentDate(iso) {
+  var d = new Date(iso);
+  return d.getFullYear() + '/' + pad(d.getMonth() + 1) + '/' + pad(d.getDate());
+}
+function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+function renderCommentList(comments) {
+  var list = document.getElementById('comment-list');
+  if (!list) return;
+  if (!comments || comments.length === 0) {
+    list.innerHTML = '<p class="comment-empty">还没有评论，来说第一句话吧。</p>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < comments.length; i++) {
+    var c = comments[i];
+    var initial = c.author.charAt(0).toUpperCase();
+    var display = c.content.replace(/\n/g, '<br>');
+    html += '<div class="comment-item">' +
+      '<div class="comment-avatar">' + initial + '</div>' +
+      '<div class="comment-right">' +
+        '<div class="comment-meta">' +
+          '<span class="comment-author">' + c.author + '</span>' +
+          '<span class="comment-date">' + formatCommentDate(c.created_at) + '</span>' +
+        '</div>' +
+        '<div class="comment-content">' + display + '</div>' +
+      '</div>' +
+    '</div>';
+  }
+  list.innerHTML = html;
+}
+
+function loadComments(articleId) {
+  fetch('/api/comments?article=' + encodeURIComponent(articleId))
+    .then(function (r) { return r.json(); })
+    .then(function (data) { renderCommentList(data); })
+    .catch(function () {
+      var list = document.getElementById('comment-list');
+      if (list) list.innerHTML = '<p class="comment-empty">评论加载失败。</p>';
+    });
+}
+
+function submitComment(articleId, form) {
+  var nameInput = form.querySelector('.comment-name-input');
+  var textarea  = form.querySelector('.comment-textarea');
+  var errorEl   = document.getElementById('comment-error');
+  var submitBtn = form.querySelector('.comment-submit');
+  var author  = nameInput.value.trim();
+  var content = textarea.value.trim();
+
+  if (errorEl) errorEl.textContent = '';
+  if (!author)  { if (errorEl) errorEl.textContent = '请填写昵称'; nameInput.focus(); return; }
+  if (!content) { if (errorEl) errorEl.textContent = '请填写评论内容'; textarea.focus(); return; }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = '发布中…';
+
+  fetch('/api/comments', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ article_id: articleId, author: author, content: content }),
+  })
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+    .then(function (res) {
+      if (!res.ok) {
+        if (errorEl) errorEl.textContent = res.data.error || '提交失败，请重试';
+        submitBtn.disabled = false;
+        submitBtn.textContent = '发布';
+        return;
+      }
+      nameInput.value = '';
+      textarea.value = '';
+      submitBtn.disabled = false;
+      submitBtn.textContent = '发布';
+      loadComments(articleId);
+    })
+    .catch(function () {
+      if (errorEl) errorEl.textContent = '网络错误，请重试';
+      submitBtn.disabled = false;
+      submitBtn.textContent = '发布';
+    });
+}
 
 // ===== Init =====
 initTheme();
