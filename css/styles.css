@@ -1113,6 +1113,21 @@ nav {
   color: var(--text-muted);
 }
 
+.comment-delete-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  padding: 0 2px;
+  opacity: 0;
+  transition: color var(--transition), opacity var(--transition);
+}
+
+.comment-item:hover .comment-delete-btn { opacity: 1; }
+.comment-delete-btn:hover { color: #e0474c; }
+
 .comment-content {
   font-size: var(--text-sm);
   color: var(--text-light);

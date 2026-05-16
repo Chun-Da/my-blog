@@ -324,19 +324,39 @@ function renderCommentList(comments) {
     var initial = c.author.charAt(0).toUpperCase();
     var display = c.content.replace(/\n/g, '<br>');
     var locationHtml = c.location ? '<span class="comment-location">来自 ' + c.location + '</span>' : '';
-    html += '<div class="comment-item">' +
+    html += '<div class="comment-item" data-id="' + c.id + '">' +
       '<div class="comment-avatar">' + initial + '</div>' +
       '<div class="comment-right">' +
         '<div class="comment-meta">' +
           '<span class="comment-author">' + c.author + '</span>' +
           locationHtml +
           '<span class="comment-date">' + formatCommentDate(c.created_at) + '</span>' +
+          '<button class="comment-delete-btn" data-id="' + c.id + '" aria-label="删除评论">删除</button>' +
         '</div>' +
         '<div class="comment-content">' + display + '</div>' +
       '</div>' +
     '</div>';
   }
   list.innerHTML = html;
+
+  list.querySelectorAll('.comment-delete-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var id = this.dataset.id;
+      if (!confirm('确定删除这条评论吗？')) return;
+      fetch('/api/comments?id=' + id, { method: 'DELETE' })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (res.success) {
+            var item = list.querySelector('.comment-item[data-id="' + id + '"]');
+            if (item) item.remove();
+            if (!list.querySelector('.comment-item')) {
+              list.innerHTML = '<p class="comment-empty">还没有评论，来说第一句话吧。</p>';
+            }
+          }
+        })
+        .catch(function () { alert('删除失败，请重试'); });
+    });
+  });
 }
 
 function loadComments(articleId) {
