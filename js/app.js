@@ -144,8 +144,9 @@ function renderArticleList() {
   var html = "";
   for (var i = 0; i < sorted.length; i++) {
     var a = sorted[i];
-    var cover = a.cover || fallbackCover(i);
-    var coverHtml = '<div class="card-cover"><img src="' + cover + '" alt="" loading="lazy"></div>';
+    var coverHtml = a.cover
+      ? '<div class="card-cover"><img src="' + a.cover + '" alt="" loading="lazy"></div>'
+      : '';
     var tagsHtml = a.tags
       ? '<div class="card-tags">' + a.tags.map(function (t) { return '<span class="card-tag">' + t + '</span>'; }).join("") + '</div>'
       : "";
