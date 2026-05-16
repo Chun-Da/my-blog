@@ -70,7 +70,7 @@ export default {
         if (request.method === 'POST') return await handlePost(request, env);
         return new Response('Method Not Allowed', { status: 405 });
       } catch (err) {
-        return json({ error: 'Internal server error' }, 500);
+        return json({ error: err.message || 'Internal server error' }, 500);
       }
     }
 
