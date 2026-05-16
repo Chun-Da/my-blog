@@ -93,6 +93,7 @@ body::before {
   pointer-events: none;
   background-image: linear-gradient(rgba(255,255,255,0.28) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.22) 1px, transparent 1px);
   background-size: 72px 72px;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.36), transparent 42rem);
   mask-image: linear-gradient(to bottom, rgba(0,0,0,0.36), transparent 42rem);
 }
 
@@ -117,7 +118,7 @@ h1, h2, h3 { letter-spacing: 0; }
   top: 0;
   z-index: 50;
   border-bottom: 1px solid var(--hairline);
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  background: var(--surface);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
@@ -243,6 +244,7 @@ nav {
    ============================================================ */
 .hero {
   min-height: calc(100vh - 54px);
+  min-height: calc(100svh - 54px);
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
   gap: 54px;
@@ -377,7 +379,7 @@ nav {
 
 .tag-pill:hover {
   color: var(--text);
-  border-color: color-mix(in srgb, var(--accent) 48%, var(--border));
+  border-color: var(--accent);
   transform: translateY(-1px);
 }
 
@@ -411,7 +413,7 @@ nav {
 
 .article-card:hover {
   transform: translateY(-5px);
-  border-color: color-mix(in srgb, var(--accent) 36%, var(--border));
+  border-color: var(--accent);
   box-shadow: var(--shadow-hover);
   background: var(--surface-strong);
 }
@@ -766,6 +768,7 @@ nav {
    ============================================================ */
 .about-content {
   min-height: calc(100vh - 54px);
+  min-height: calc(100svh - 54px);
   display: grid;
   grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1fr);
   gap: 48px;
@@ -1035,6 +1038,30 @@ nav {
   .about-content p {
     font-size: 1.03rem;
   }
+}
+
+/* ============================================================
+   Safari / Touch
+   ============================================================ */
+a, button, .article-card, .tag-pill, .nav-link, .back-btn {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.comment-name-input,
+.comment-textarea {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* show delete button on touch devices (no hover) */
+@media (hover: none) {
+  .comment-delete-btn { opacity: 1; }
+}
+
+/* prevent iOS Safari input zoom (font-size must be >= 16px) */
+@media (max-width: 640px) {
+  .comment-name-input,
+  .comment-textarea { font-size: 1rem; }
 }
 
 /* ============================================================
